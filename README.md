@@ -15,13 +15,13 @@
 
 **Wsl2**:
 - Enable systemd support:
-  - Edit conf file: `echo -e "[boot]\nsystemd=true" | sudo tee -a /etc/wsl.conf`
-  - Restart wsl distro: `wsl.exe -t <DistroName>`
-
+  ```sh
+  echo -e "[boot]\nsystemd=true" | sudo tee -a /etc/wsl.conf && wsl.exe -t <DistroName>
+  ```
 # Install
 
 ```sh
-source <(curl -L https://github.com/simifalaye/dotfiles-nix/blob/main/bootstrap.sh)
+source <(curl -L https://raw.githubusercontent.com/simifalaye/dotfiles-nix/main/bootstrap.sh)
 ```
 
 # Terminal Applications

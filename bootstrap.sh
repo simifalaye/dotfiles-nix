@@ -82,7 +82,6 @@ case "$(uname -s)" in
         sh <(curl -L https://nixos.org/nix/install) --daemon --yes
       fi
     fi
-    exec $SHELL
     ;;
   Darwin)
     echo "## Detected Darwin machine, installing deps..."
@@ -92,7 +91,6 @@ case "$(uname -s)" in
     if ! command -v nix >/dev/null; then
       sh <(curl -L https://nixos.org/nix/install) --yes
     fi
-    exec $SHELL
     ;;
   *)
     echo "ERROR: Unsupported operating system" && exit 1
@@ -124,6 +122,5 @@ git clone git@github.com:"${GITHUB_USER}"/"${REPO_NAME}".git "${CLONE_DIR}"
 # Navigate to the cloned repository directory
 cd "${CLONE_DIR}" || exit 1
 
-# Run the repo install script
-echo "## Running dotfiles install..."
-bash install
+# Restart shell to pull in nix
+exec $SHELL
