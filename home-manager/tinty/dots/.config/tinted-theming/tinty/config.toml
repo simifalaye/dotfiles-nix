@@ -28,16 +28,14 @@ name = "tinted-shell"
 # Name of the repository directory containing the theme files
 themes-dir = "scripts"
 # (Optional) Command to execute after copying template (goes through `shell`)
-hook = ""
-# (Optional) supported scheme system of template. Some templates
-# could support multiple scheme systems.
-supported-systems = ["base16", "base24"]
+hook = ". %f"
 
 [[items]]
 path = "https://github.com/tinted-theming/tinted-tmux"
 name = "tinted-tmux"
+# Check if tmux is in use and if it is, reload the config file
+hook = "tmux run 2> /dev/null && tmux source-file %f"
 themes-dir = "colors"
-hook = "test -n \"$TMUX\" && tmux source-file %f"
 
 [[items]]
 path = "https://github.com/tinted-theming/tinted-fzf"

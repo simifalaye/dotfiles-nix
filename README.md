@@ -11,7 +11,8 @@
 # Pre-Install Requirements
 
 **General**:
-- curl
+- curl:
+  - For Debian based distros, run: `sudo apt update && sudo apt install curl`
 
 **Wsl2**:
 - Enable systemd support:
@@ -22,6 +23,7 @@
 
 ```sh
 source <(curl -L https://raw.githubusercontent.com/simifalaye/dotfiles-nix/main/bootstrap.sh)
+./install
 ```
 
 # Terminal Applications

@@ -1,4 +1,20 @@
+local default_theme = "base16-default"
+local tinty_installed = vim.fn.executable("tinty") == 1
+local function get_tinty_theme()
+  if not tinty_installed then
+    return default_theme
+  end
+  local theme_name = vim.fn.system("tinty current &> /dev/null && tinty current")
+  if vim.v.shell_error ~= 0 then
+    return default_theme
+  else
+    return vim.trim(theme_name)
+  end
+end
+
+-- Set require vim options
 vim.o.termguicolors = true
+vim.g.tinted_colorspace = 256
 
 -- Load base16 with configuration
 require("base16-colorscheme").with_config({
@@ -6,22 +22,19 @@ require("base16-colorscheme").with_config({
   telescope_borders = true,
 })
 
--- Use tinty helper if installed
-local set_theme_path = vim.env.TINTY_SCHEME_FILE
-if vim.fn.filereadable(set_theme_path) == 1 then
-  local fs = require("utils.fs")
+-- Set colorscheme
+vim.cmd("colorscheme " .. get_tinty_theme())
 
-  vim.cmd("colorscheme " .. fs.read_file(set_theme_path))
-  -- Autoload new theme if updated
-  fs.watch(set_theme_path, {
-    on_event = function()
+-- Handle theme changes on focus gained
+vim.api.nvim_create_autocmd("FocusGained", {
+  callback = function()
+    local new_theme_name = get_tinty_theme()
+    local current_theme_name = vim.g.colors_name
+
+    if current_theme_name ~= new_theme_name then
       vim.schedule(function()
-        if vim.fn.filereadable(set_theme_path) == 1 then
-          vim.cmd("colorscheme " .. fs.read_file(set_theme_path))
-        end
+        vim.cmd("colorscheme " .. new_theme_name)
       end)
-    end,
-  })
-else
-  vim.cmd("colorscheme base16-default-dark")
-end
+    end
+  end,
+})
