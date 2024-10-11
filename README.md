@@ -11,7 +11,7 @@
 # Pre-Install Requirements
 
 **General**:
-- wget
+- curl
 
 **Wsl2**:
 - Enable systemd support:
@@ -21,7 +21,7 @@
 # Install
 
 ```sh
-source <(wget -qO- https://github.com/simifalaye/dotfiles-nix/blob/main/install.sh)
+source <(curl -L https://github.com/simifalaye/dotfiles-nix/blob/main/bootstrap.sh)
 ```
 
 # Terminal Applications
