@@ -26,7 +26,17 @@ esac
 echo "## System Info: $architecture"
 
 # Run home-manager
-exec home-manager switch \
-  --impure \
-  --experimental-features 'nix-command flakes' \
-  --flake ~/dotfiles#simifa-"${architecture}"
+if command -v home-manager >/dev/null; then
+  home-manager switch \
+    -b backup \
+    --impure \
+    --extra-experimental-features "nix-command flakes" \
+    --flake ~/dotfiles#simifa-"${architecture}"
+else
+  nix --extra-experimental-features "nix-command flakes" run \
+    home-manager/release-24.05 switch -- \
+    -b backup \
+    --impure \
+    --extra-experimental-features "nix-command flakes" \
+    --flake ~/dotfiles#simifa-"${architecture}"
+fi

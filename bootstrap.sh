@@ -119,8 +119,12 @@ read -r dummy
 echo "## Cloning dotfiles repo..."
 git clone git@github.com:"${GITHUB_USER}"/"${REPO_NAME}".git "${CLONE_DIR}"
 
+# Switch to zsh
+echo "## Setting zsh as default shell..."
+chsh -s "$(which zsh)"
+
 # Navigate to the cloned repository directory
 cd "${CLONE_DIR}" || exit 1
 
 # Restart shell to pull in nix
-exec $SHELL
+exec "$(which zsh)"
