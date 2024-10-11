@@ -7,7 +7,7 @@ tinty_source_shell_theme() {
   subcommand="$1"
 
   if [ "$subcommand" = "apply" ] || [ "$subcommand" = "init" ]; then
-    tinty_data_dir="${XDG_DATA_HOME:-$HOME/.local/share}/tinted-theming/tinty"
+    tinty_data_dir="${XDG_DATA_HOME}/tinted-theming/tinty"
 
     while read -r script; do
       # shellcheck disable=SC1090
@@ -20,10 +20,11 @@ tinty_source_shell_theme() {
   unset subcommand
 }
 
-if [ ! -d "${XDG_DATA_HOME:-$HOME/.local/share}/tinted-theming/tinty" ]; then
-  tinty install
-fi
 if [ -n "$(command -v 'tinty')" ]; then
+  if [ ! -d "${XDG_DATA_HOME}/tinted-theming/tinty" ]; then
+    tinty_source_shell_theme install
+  fi
+
   tinty_source_shell_theme "init" > /dev/null
 
   alias tinty=tinty_source_shell_theme

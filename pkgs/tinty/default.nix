@@ -26,8 +26,9 @@ in
     '';
 
     installPhase = ''
+      # Install bin
       mkdir -p $out/bin
-      cp source/* $out/bin
+      cp source/tinty $out/bin
     '';
 
     meta = {
