@@ -34,6 +34,6 @@ in
       description = "A Base16 and Base24 color scheme manager";
       homepage = "https://github.com/tinted-theming/tinty";
       license = pkgs.lib.licenses.mit;
-      maintainers = with pkgs.lib.maintainers; [];
+      maintainers = [];
     };
   }

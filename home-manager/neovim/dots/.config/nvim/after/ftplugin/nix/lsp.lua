@@ -6,11 +6,18 @@ lsp.start({
   single_file_support = true,
   root_patterns = {
     "flake.nix",
-    ".git",
   },
   settings = {
     ["nil"] = {
-      formatting = { command = { "nix fmt" } },
+      formatting = { command = { "alejandra" } },
     },
   },
+  on_attach = function(_, buf)
+    vim.keymap.set(
+      "n",
+      "gq.",
+      vim.lsp.buf.format,
+      { desc = "Format Document", buffer = buf }
+    )
+  end,
 })

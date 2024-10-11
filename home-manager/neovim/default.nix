@@ -1,13 +1,14 @@
 {
   config,
   pkgs,
-  system,
-  lib,
+  _system,
+  _lib,
   ...
 }: let
   util = (import ../util.nix) {config = config;};
 in {
   home.packages = with pkgs; [
+    luajit
     unstable.neovim
   ];
 

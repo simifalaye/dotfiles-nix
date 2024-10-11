@@ -1,8 +1,8 @@
 {
   config,
-  pkgs,
-  system,
-  lib,
+  _pkgs,
+  _system,
+  _lib,
   ...
 }: let
   util = (import ../util.nix) {config = config;};

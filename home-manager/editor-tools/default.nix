@@ -8,6 +8,7 @@
   util = (import ../util.nix) {config = config;};
 in {
   home.packages = with pkgs; [
+    alejandra
     ansible-language-server
     ansible-lint
     black

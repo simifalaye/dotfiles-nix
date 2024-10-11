@@ -1,11 +1,10 @@
-# This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
 {
   _inputs,
   outputs,
   _lib,
   _config,
-  _pkgs,
+  pkgs,
   ...
 }: {
   # You can import other home-manager modules here
@@ -69,7 +68,7 @@
     ];
     # Configure your nixpkgs instance
     config = {
-      # Disable if you don't want unfree packages
+      # Allow non-oss packages
       allowUnfree = true;
     };
   };
@@ -82,4 +81,10 @@
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "24.05";
+
+  # Configure nix
+  nix = {
+    package = pkgs.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
 }

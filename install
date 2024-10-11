@@ -1,103 +1,32 @@
-#!/bin/sh
+#!/bin/bash
 
-# Reset all variables that might be set
-init=0
-system=0
-
-while :; do
-  case $1 in
-    -h|-\?|--help)
-      echo "usage: $0 [-is]"
-      echo "  -i,--init      Initialize dotfiles"
-      echo "  -s,--system    Install system packages"
-      echo "  -h,--help      Display help"
-      exit
-      ;;
-    # -f|--file)
-    #   if [ -n "$2" ]; then
-    #     file=$2
-    #     shift
-    #   else
-    #     printf 'ERROR: "--file" requires a non-empty option argument.\n' >&2
-    #     exit 1
-    #   fi
-    #   ;;
-    -i|--init)
-      init=1
-      ;;
-    -s|--system)
-      system=1
-      ;;
-    --)
-      shift
-      break
-      ;;
-    -?*)
-      printf 'WARN: Unknown option (ignored): %s\n' "$1" >&2
-      ;;
-    *)
-      break
-  esac
-
-  shift
-done
-
-# Detect architecture and distro
+# Detect architecture
 architecture=""
-distro=""
 case "$(uname -s)" in
   Linux)
     case "$(uname -m)" in
       x86_64) architecture="x86_64-linux" ;;
       aarch64) architecture="aarch64-linux" ;;
       i686) architecture="i686-linux" ;;
-      *) echo "Unsupported architecture" && exit 1 ;;
+      *) echo "ERROR: Unsupported architecture" && exit 1 ;;
     esac
-    if [ -f /etc/os-release ]; then
-      if grep -q -E 'ubuntu' /etc/os-release; then
-        distro="ubuntu"
-      elif grep -q -E '(arch)' /etc/os-release; then
-        distro="arch"
-      elif grep -q -E '(opensuse)' /etc/os-release; then
-        distro="suse"
-      else
-        echo "Unsupported Linux distribution" && exit 1
-      fi
-    else
-      echo "Missing linux os-release file" && exit 1
-    fi
     ;;
   Darwin)
     case "$(uname -m)" in
       x86_64) architecture="x86_64-darwin" ;;
       arm64) architecture="aarch64-darwin" ;;
-      *) echo "Unsupported architecture" && exit 1 ;;
+      *) echo "ERROR: Unsupported architecture" && exit 1 ;;
     esac
-    distro="mac"
     ;;
   *)
-    echo "Unsupported operating system" && exit 1
+    echo "ERROR: Unsupported operating system" && exit 1
     ;;
 esac
 
-echo "System Info: $distro/$architecture"
-
-# Install required system packages
-if [ ${system} -eq 1 ]; then
-  echo "Installing system packages"
-  case "${distro}" in
-    ubuntu) sudo apt update && sudo apt install bash zsh git ;;
-    arch) sudo pacman -S bash zsh git ;;
-    suse) sudo zypper install bash zsh git ;;
-    *) ;;
-  esac
-fi
-
-# Init dotfiles repo
-if [ ${init} -eq 1 ]; then
-  echo "Initializing dotfiles"
-  exit 0
-fi
+echo "## System Info: $architecture"
 
 # Run home-manager
-exec home-manager switch --impure --flake ~/dotfiles#simifa-"${architecture}"
+exec home-manager switch \
+  --impure \
+  --experimental-features 'nix-command flakes' \
+  --flake ~/dotfiles#simifa-"${architecture}"

@@ -57,11 +57,10 @@ tree-sitter-groovy = "0.0.29"
 tree-sitter-kdl = "0.0.29"
 tree-sitter-robot = "0.0.29"
 base16-nvim = "scm"
-tree-sitter-nix = "0.0.39"
+tree-sitter-nix = "0.0.40"
 
 [plugins."blink.cmp"]
 git = "saghen/blink.cmp"
-rev = "v0.2.1^{}"
 
 [config]
 plugins_dir = "plugins/"

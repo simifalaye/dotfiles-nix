@@ -1,11 +1,10 @@
 {
-  config,
+  _config,
   pkgs,
-  system,
-  lib,
+  _system,
+  _lib,
   ...
-}: let
-in {
+}: {
   home.packages = with pkgs; [
     bitwise
   ];
